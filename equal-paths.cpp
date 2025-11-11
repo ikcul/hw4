@@ -15,10 +15,14 @@ int helperFunction(Node * root, int depth){
     int leftsum = helperFunction(root->left, depth+1);
     int rightsum = helperFunction(root->right, depth+1);
 
-    if (rightsum != leftsum){
+    if (root->left == nullptr && root->right == nullptr){
+        if (rightsum != leftsum){
         return -1;
+        }
+        return 0;
     }
-    return 0;
+    return -1;
+    
 }
 
 bool equalPaths(Node * root)
