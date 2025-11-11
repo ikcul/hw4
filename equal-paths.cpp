@@ -8,11 +8,27 @@ using namespace std;
 
 
 // You may add any prototypes of helper functions here
+int helperFunction(Node * root, int depth){
+    if (root == nullptr){
+        return depth;
+    }
+    int leftsum = helperFunction(root->left, depth+1);
+    int rightsum = helperFunction(root->right, depth+1);
 
+    if (rightsum != leftsum){
+        return -1;
+    }
+    return 0;
+}
 
 bool equalPaths(Node * root)
 {
     // Add your code below
-
+    int x = helperFunction(root, 0);
+    if (x == 0){
+        return true;
+    }
+    return false;
+    
 }
 
