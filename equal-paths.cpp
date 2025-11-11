@@ -10,7 +10,7 @@ using namespace std;
 // You may add any prototypes of helper functions here
 int helperFunction(Node * root, int depth){
     if (root == nullptr){
-        return -1;
+        return 0;
     }
     if (root->left == nullptr && root->right == nullptr){
         return depth;
@@ -19,6 +19,10 @@ int helperFunction(Node * root, int depth){
     int rightsum = helperFunction(root->right, depth+1);
     if (rightsum == leftsum){
         return rightsum;
+    }else if (leftsum == -1){
+        return rightsum;
+    }else if (rightsum == -1){
+        return leftsum;
     }
     return -1;
     
