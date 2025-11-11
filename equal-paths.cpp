@@ -9,6 +9,7 @@ using namespace std;
 
 // You may add any prototypes of helper functions here
 int helperFunction(Node * root, int depth){
+    //empty branch
     if (root == nullptr){
         return 0;
     }
@@ -17,14 +18,20 @@ int helperFunction(Node * root, int depth){
     }
     int leftsum = helperFunction(root->left, depth+1);
     int rightsum = helperFunction(root->right, depth+1);
+    //checks to see if any branch is invalid
     if (rightsum == -1 || leftsum == -1){
         return -1;
     }
+    //checks if they are equal length
     if (rightsum == leftsum){
         return rightsum;
-    }else if (leftsum == 0){
+    }
+    //checks if one branch is empty
+    else if (leftsum == 0){
         return rightsum;
-    }else if (rightsum == 0){
+    }
+    //checks the other
+    else if (rightsum == 0){
         return leftsum;
     }
     return -1;
