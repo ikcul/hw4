@@ -267,6 +267,7 @@ template<class Key, class Value>
 BinarySearchTree<Key, Value>::iterator::iterator(Node<Key,Value> *ptr)
 {
     // TODO
+    current_ = ptr;
 }
 
 /**
@@ -276,6 +277,7 @@ template<class Key, class Value>
 BinarySearchTree<Key, Value>::iterator::iterator() 
 {
     // TODO
+    current_ = nullptr;
 
 }
 
@@ -309,6 +311,7 @@ BinarySearchTree<Key, Value>::iterator::operator==(
     const BinarySearchTree<Key, Value>::iterator& rhs) const
 {
     // TODO
+    return current_ == rhs.current_;
 }
 
 /**
@@ -321,6 +324,7 @@ BinarySearchTree<Key, Value>::iterator::operator!=(
     const BinarySearchTree<Key, Value>::iterator& rhs) const
 {
     // TODO
+    return current_ != rhs.current_;
 
 }
 
@@ -333,6 +337,26 @@ typename BinarySearchTree<Key, Value>::iterator&
 BinarySearchTree<Key, Value>::iterator::operator++()
 {
     // TODO
+    if (current_ == nullptr){
+        return *this;
+    }
+    if (current_->getRight() != nullptr){
+        current_ = current_->getRight();
+        while (current_->getLeft() != nullptr){
+            current_ = current_->getLeft();
+        }
+        return *this;
+    }
+    if (current_->getParent() != nullptr){
+        while (current_->getParent() != nullptr && current_->getParent()->getLeft() != current_){
+            current_ = current_->getParent();
+        }
+        current_ = current_->getParent();
+    }
+    else{
+        current_ = nullptr;
+    }
+    return *this;
 
 }
 
@@ -356,13 +380,14 @@ template<class Key, class Value>
 BinarySearchTree<Key, Value>::BinarySearchTree() 
 {
     // TODO
+    root_ = nullptr;
 }
 
 template<typename Key, typename Value>
 BinarySearchTree<Key, Value>::~BinarySearchTree()
 {
     // TODO
-
+    clear();
 }
 
 /**
@@ -445,6 +470,14 @@ template<class Key, class Value>
 void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &keyValuePair)
 {
     // TODO
+    if (root_ == nullptr){
+        root_ = keyValuePair;
+    }
+    if (keyValuePair.first > current_->getKey()){
+
+    }else if (keyValuePair.first < current_->getKey()){
+        
+    }
 }
 
 
