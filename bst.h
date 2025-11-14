@@ -247,7 +247,7 @@ protected:
     virtual void nodeSwap( Node<Key,Value>* n1, Node<Key,Value>* n2) ;
 
     // Add helper functions here
-    int isBalancedHelper(const Node<Key, Value> *root);
+    int isBalancedHelper(const Node<Key, Value> *root) const;
 
 
 protected:
