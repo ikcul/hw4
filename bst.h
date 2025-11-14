@@ -573,7 +573,7 @@ BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current)
     }
     if (current->getLeft() != nullptr){
         current = current->getLeft();
-        while (current->getRight){
+        while (current->getRight()){
             current = current->getRight();
         }
         return current;
