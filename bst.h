@@ -497,6 +497,7 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
             }
         }else{
             curr->setValue(keyValuePair.second);
+            return;
         }
     }
 }
