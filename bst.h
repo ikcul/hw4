@@ -247,6 +247,7 @@ protected:
     virtual void nodeSwap( Node<Key,Value>* n1, Node<Key,Value>* n2) ;
 
     // Add helper functions here
+    int isBalancedHelper(Node<Key, Value> *root, int depth);
 
 
 protected:
@@ -635,6 +636,28 @@ Node<Key, Value>* BinarySearchTree<Key, Value>::internalFind(const Key& key) con
     return nullptr;
 }
 
+//Helper function 
+template<typename Key, typename Value>
+int isBalancedHelper(Node<Key, Value> *root){
+    if (root == nullptr){
+        return 0;
+    } 
+    int leftsum = isBalancedHelper(root->getLeft());
+    int rightsum = isBalancedHelper(root->getRight());
+    if (rightsum == -1 || leftsum == -1){
+        return -1;
+    }
+    if (std::abs(rightsum - leftsum) < 2){
+        if (rightsum > leftsum){
+            return rightsum + 1;
+        }
+        else{
+            return leftsum + 1;
+        }
+    }
+    return -1;
+}
+
 /**
  * Return true iff the BST is balanced.
  */
@@ -642,7 +665,7 @@ template<typename Key, typename Value>
 bool BinarySearchTree<Key, Value>::isBalanced() const
 {
     // TODO
-    
+    return isBalancedHelper(root_) != -1;
 }
 
 
