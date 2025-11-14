@@ -638,7 +638,7 @@ Node<Key, Value>* BinarySearchTree<Key, Value>::internalFind(const Key& key) con
 
 //Helper function 
 template<typename Key, typename Value>
-int isBalancedHelper(const Node<Key, Value> *root){
+int BinarySearchTree<Key, Value>::isBalancedHelper(const Node<Key, Value> *root){
     if (root == nullptr){
         return 0;
     } 
