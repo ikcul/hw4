@@ -137,13 +137,13 @@ protected:
     virtual void nodeSwap( AVLNode<Key,Value>* n1, AVLNode<Key,Value>* n2);
 
     // Add helper functions here
-    AVLNode<Key, Value>* rotateLeft(AVLNode<Key, Value> *node);
-    AVLNode<Key, Value>* rotateRight(AVLNode<Key, Value> *node);
+    void rotateLeft(AVLNode<Key, Value> *node);
+    void rotateRight(AVLNode<Key, Value> *node);
 
 };
 
 template<class Key, class Value>
-AVLNode<Key, Value>* AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
+void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     //start with middle node
     //get the parent node
     if (node == nullptr){
@@ -169,11 +169,11 @@ AVLNode<Key, Value>* AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     
     right->setLeft(node);
     node->setParent(right);
-    return right;
+    // return right;
 
 }
 template<class Key, class Value>
-AVLNode<Key, Value>* AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
+void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     //start with middle node
     //get the parent node
     if (node == nullptr){
@@ -189,7 +189,7 @@ AVLNode<Key, Value>* AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node)
     }
     left->setParent(par);
     if(par == nullptr){
-        root_ = left;
+        this->root_ = left;
     }
     else if(par->getRight() == node){
         par->setRight(left);
@@ -212,7 +212,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
     // TODO
     BinarySearchTree<Key, Value>::insert(new_item);
 
-    AVLNode<Key, Value> *temp = BinarySearchTree<Key, Value>::internalFind(new_item.first);
+    AVLNode<Key, Value> *temp = (AVLNode<Key, Value>*)BinarySearchTree<Key, Value>::internalFind(new_item.first);
     if (temp == this->root_){
         return;
     }
@@ -256,7 +256,7 @@ template<class Key, class Value>
 void AVLTree<Key, Value>:: remove(const Key& key)
 {
     // TODO
-    
+
 }
 
 template<class Key, class Value>
