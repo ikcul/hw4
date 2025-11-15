@@ -553,21 +553,28 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
                 }
                 return;
             }
-            else if (curr->getLeft() != nullptr && curr->getParent()->getLeft() == curr){
-                curr->getParent()->setLeft(curr->getLeft());
+            if (curr->getLeft() != nullptr){
+                if (curr->getParent()->getLeft() == curr){
+                    curr->getParent()->setLeft(curr->getLeft());
+                }else{
+                    curr->getParent()->setRight(curr->getLeft());
+                }
                 curr->getLeft()->setParent(curr->getParent());
-                delete curr;        
-            }else if(curr->getLeft() != nullptr && curr->getParent()->getRight() == curr){
-                curr->getParent()->setRight(curr->getLeft());
-                curr->getLeft()->setParent(curr->getParent());
-                delete curr;
-            }else if(curr->getParent()->getLeft() == curr){
-                curr->getParent()->setLeft(nullptr);
-                delete curr;
-            }else{
-                curr->getParent()->setRight(nullptr);
-                delete curr;
+            }else if(curr->getRight() != nullptr){
+                if (curr->getParent()->getLeft() == curr){
+                    curr->getParent()->setLeft(curr->getRight());
+                }else{
+                    curr->getParent()->setRight(curr->getRight());
+                }
+                curr->getRight()->setParent(curr->getParent());
+            }else{  
+                if(curr->getParent()->getLeft() == curr){
+                    curr->getParent()->setLeft(nullptr);
+                }else{
+                    curr->getParent()->setRight(nullptr);
+                }
             }
+            delete curr;
             return;
         }
     }
