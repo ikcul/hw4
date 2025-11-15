@@ -275,29 +275,30 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
         }
 
         int8_t tempBalance = temp->getParent()->getBalance();
-
+        AVLNode<Key, Value> *tempParent = temp->getParent();
         if (tempBalance == 0){
             return;
-        }else if (tempBalance == -2){
+        }
+        else if (tempBalance == -2){
             if (temp->getParent()->getLeft()->getBalance() <= 0){
-                rotateRight(temp->getParent());
+                rotateRight(tempParent);
             }else{
                 AVLNode<Key, Value> *tempChild = temp->getParent()->getLeft();
                 if (tempChild){
                     rotateLeft(tempChild);
                 }
-                rotateRight(temp->getParent());
+                rotateRight(tempParent);
             }
             break;
         }else if(tempBalance == 2){
             if (temp->getParent()->getRight()->getBalance() >= 0){
-                rotateLeft(temp->getParent());
+                rotateLeft(tempParent);
             }else{
                 AVLNode<Key, Value> *tempChild = temp->getParent()->getRight();
                 if(tempChild){
                     rotateRight(tempChild);
                 }
-                rotateLeft(temp->getParent());
+                rotateLeft(tempParent);
             }
             break;
         }
