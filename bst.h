@@ -611,6 +611,9 @@ Node<Key, Value>*
 BinarySearchTree<Key, Value>::getSmallestNode() const
 {
     // TODO
+    if (root_ == nullptr){
+        return nullptr;
+    }
     Node<Key, Value> *temp = root_;
     while (temp->getLeft()){
         temp = temp->getLeft();
