@@ -162,6 +162,8 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
 
         node->setRight(rightLeftSub);
         rightLeftSub->setParent(node);
+    }else{
+        node->setRight(nullptr);
     }
     right->setParent(par);
     if(par == nullptr){
@@ -202,6 +204,8 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
 
         node->setLeft(leftRightSub);
         leftRightSub->setParent(node);
+    }else{
+        node->setLeft(nullptr);
     }
     left->setParent(par);
     if(par == nullptr){
@@ -230,11 +234,38 @@ template<class Key, class Value>
 void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 {
     // TODO
-    BinarySearchTree<Key, Value>::insert(new_item);
-
-    AVLNode<Key, Value> *temp = (AVLNode<Key, Value>*)BinarySearchTree<Key, Value>::internalFind(new_item.first);
-    if (temp == this->root_){
+    // BinarySearchTree<Key, Value>::insert(new_item);
+    // AVLNode<Key, Value> *temp = (AVLNode<Key, Value>*)BinarySearchTree<Key, Value>::internalFind(new_item.first);
+    if (this->root_ == nullptr){
+        this->root_ = new AVLNode<Key, Value> (new_item.first, new_item.second, nullptr);
         return;
+    }
+    AVLNode<Key, Value> *curr = this->root_;
+    const Key& newKey = new_item.first;
+    AVLNode<Key, Value> *temp = curr;
+    while (curr != nullptr){
+        if (newKey > curr->getKey()){
+            if (curr->getRight()){
+                curr = curr->getRight();
+            }else{
+                AVLNode<Key, Value> *newNode = new AVLNode<Key, Value> (new_item.first, new_item.second, curr);
+                curr->setRight(newNode);
+                temp = newNode;
+                break;
+            }
+        }else if (newKey < curr->getKey()){
+            if (curr->getLeft()){
+                curr = curr->getLeft();
+            }else{
+                AVLNode<Key, Value> *newNode = new AVLNode<Key, Value> (new_item.first, new_item.second, curr);
+                curr->setLeft(newNode);
+                temp = newNode;
+                break;
+            }
+        }else{
+            curr->setValue(new_item.second);
+            return;
+        }
     }
     while (temp->getParent()){
         if (temp == temp->getParent()->getRight()){
