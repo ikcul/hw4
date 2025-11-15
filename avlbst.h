@@ -240,7 +240,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
         this->root_ = new AVLNode<Key, Value> (new_item.first, new_item.second, nullptr);
         return;
     }
-    AVLNode<Key, Value> *curr = this->root_;
+    AVLNode<Key, Value> *curr = (AVLNode<Key, Value>*)this->root_;
     const Key& newKey = new_item.first;
     AVLNode<Key, Value> *temp = curr;
     while (curr != nullptr){
