@@ -152,11 +152,9 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     AVLNode<Key, Value> *par = node->getParent();
     AVLNode<Key, Value> *right = node->getRight();
 
-    int8_t nodeBal = node->getBalance();
     if (!right){
         return;
     }
-    int8_t rightBal = right->getBalance();
     if (right->getLeft()){
         AVLNode<Key, Value> *rightLeftSub = right->getLeft();
 
@@ -199,12 +197,9 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     }
     AVLNode<Key, Value> *par = node->getParent();
     AVLNode<Key, Value> *left = node->getLeft();
-
-    int8_t nodeBal = node->getBalance();
     if (!left){
         return;
     }
-    int8_t leftBal = left->getBalance();
     if (left->getRight()){
         AVLNode<Key, Value> *leftRightSub = left->getRight();
 
