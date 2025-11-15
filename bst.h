@@ -543,6 +543,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
                     curr->getRight()->setParent(nullptr);
                 }
                 delete curr;
+                return;
             }
             if (curr->getLeft() != nullptr && curr->getParent()->getLeft() == curr){
                 curr->getParent()->setLeft(curr->getLeft());
