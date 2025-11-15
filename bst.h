@@ -531,7 +531,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
                 return;
             }
         }else{
-            if (curr->getRight() != nullptr || curr->getLeft() != nullptr){
+            if (curr->getRight() != nullptr && curr->getLeft() != nullptr){
                 nodeSwap(predecessor(curr), curr);
             }
             if (curr == root_){
