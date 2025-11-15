@@ -544,7 +544,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
                 }
                 delete curr;
             }
-            else if (curr->getLeft() != nullptr && curr->getParent()->getLeft() == curr){
+            if (curr->getLeft() != nullptr && curr->getParent()->getLeft() == curr){
                 curr->getParent()->setLeft(curr->getLeft());
                 curr->getLeft()->setParent(curr->getParent());
                 delete curr;        
