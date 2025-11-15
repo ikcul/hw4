@@ -516,7 +516,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         return;
     }
     Node<Key, Value> *curr = root_;
-    
+
     while (curr != nullptr){
         if (key > curr->getKey()){
             if (curr->getRight()){
@@ -533,21 +533,21 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         }else{
             if (curr->getRight() != nullptr && curr->getLeft() != nullptr){
                 nodeSwap(predecessor(curr), curr);
+
+
             }
             if (curr == root_){
+                root_ = curr->getLeft();
                 if(curr->getLeft() != nullptr){
-                    root_ = curr->getLeft();
+
                     curr->getLeft()->setParent(nullptr);
-                }else if(curr->getRight() != nullptr){
-                    root_ = curr->getRight();
-                    curr->getRight()->setParent(nullptr);
-                }else{
-                    root_ = nullptr;
+
+
+
                 }
                 delete curr;
-                return;
             }
-            if (curr->getLeft() != nullptr && curr->getParent()->getLeft() == curr){
+            else if (curr->getLeft() != nullptr && curr->getParent()->getLeft() == curr){
                 curr->getParent()->setLeft(curr->getLeft());
                 curr->getLeft()->setParent(curr->getParent());
                 delete curr;        
@@ -567,7 +567,6 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     }
     return;
 }
-
 
 
 template<class Key, class Value>
