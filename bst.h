@@ -531,21 +531,27 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
                 return;
             }
         }else{
-            if (curr->getRight() != nullptr && curr->getLeft() != nullptr){
+            if (curr->getRight() != nullptr || curr->getLeft() != nullptr){
                 nodeSwap(predecessor(curr), curr);
-
-
             }
             if (curr == root_){
-                root_ = curr->getLeft();
-                if(curr->getLeft() != nullptr){
-
-                    curr->getLeft()->setParent(nullptr);
-
-
-
+                if (curr->getLeft()){
+                    root_ = curr->getLeft();
+                    if(curr->getLeft() != nullptr){
+                        curr->getLeft()->setParent(nullptr);
+                        delete curr;
+                    }
+                }else if (curr->getRight()){
+                    root_ = curr->getRight();
+                    if (curr->getRight()){
+                        curr->getRight()->setParent(nullptr);
+                        delete curr;
+                    }
+                }else{
+                    root_ = nullptr;
+                    delete curr;
                 }
-                delete curr;
+                return;
             }
             else if (curr->getLeft() != nullptr && curr->getParent()->getLeft() == curr){
                 curr->getParent()->setLeft(curr->getLeft());
