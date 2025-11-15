@@ -137,10 +137,71 @@ protected:
     virtual void nodeSwap( AVLNode<Key,Value>* n1, AVLNode<Key,Value>* n2);
 
     // Add helper functions here
-
+    AVLNode<Key, Value>* rotateLeft(AVLNode<Key, Value> *node);
+    AVLNode<Key, Value>* rotateRight(AVLNode<Key, Value> *node);
 
 };
 
+template<class Key, class Value>
+AVLNode<Key, Value>* AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
+    //start with middle node
+    //get the parent node
+    if (node == nullptr){
+        return nullptr;
+    }
+    AVLNode<Key, Value> *par = node->getParent();
+    AVLNode<Key, Value> *right = node->getRight();
+    if (right->getLeft()){
+        AVLNode<Key, Value> *rightLeftSub = right->getLeft();
+
+        node->setRight(rightLeftSub);
+        rightLeftSub->setParent(node);
+    }
+    right->setParent(par);
+    if(par == nullptr){
+        this->root_ = right;
+    }
+    else if(par->getLeft() == node){
+        par->setLeft(right);
+    }else{
+        par->setRight(right);
+    }
+    
+    right->setLeft(node);
+    node->setParent(right);
+    return right;
+
+}
+template<class Key, class Value>
+AVLNode<Key, Value>* AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
+    //start with middle node
+    //get the parent node
+    if (node == nullptr){
+        return nullptr;
+    }
+    AVLNode<Key, Value> *par = node->getParent();
+    AVLNode<Key, Value> *left = node->getLeft();
+    if (left->getRight()){
+        AVLNode<Key, Value> *leftRightSub = left->getRight();
+
+        node->setLeft(leftRightSub);
+        leftRightSub->setParent(node);
+    }
+    left->setParent(par);
+    if(par == nullptr){
+        root_ = left;
+    }
+    else if(par->getRight() == node){
+        par->setRight(left);
+    }else{
+        par->setLeft(left);
+    }
+    
+    left->setRight(node);
+    node->setParent(left);
+    return left;
+
+}
 /*
  * Recall: If key is already in the tree, you should 
  * overwrite the current value with the updated value.
@@ -149,6 +210,42 @@ template<class Key, class Value>
 void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 {
     // TODO
+    BinarySearchTree<Key, Value>::insert(new_item);
+
+    AVLNode<Key, Value> *temp = BinarySearchTree<Key, Value>::internalFind(new_item.first);
+    if (temp == this->root_){
+        return;
+    }
+    while (temp->getParent()){
+        if (temp == temp->getParent()->getRight()){
+            temp->getParent()->updateBalance(1);
+        }else{
+            temp->getParent()->updateBalance(-1);
+        }
+
+        int8_t tempBalance = temp->getParent()->getBalance();
+
+        if (tempBalance == 0){
+            return;
+        }else if (tempBalance == -2){
+            if (temp->getParent()->getLeft()->getBalance() <= 0){
+                rotateRight(temp->getParent());
+            }else{
+                rotateLeft(temp->getParent()->getLeft());
+                rotateRight(temp->getParent());
+            }
+            break;
+        }else if(tempBalance == 2){
+            if (temp->getParent()->getRight()->getBalance() >= 0){
+                rotateLeft(temp->getParent());
+            }else{
+                rotateRight(temp->getParent()->getRight());
+                rotateLeft(temp->getParent());
+            }
+            break;
+        }
+        temp = temp->getParent();
+    }
 }
 
 /*
@@ -159,6 +256,7 @@ template<class Key, class Value>
 void AVLTree<Key, Value>:: remove(const Key& key)
 {
     // TODO
+    
 }
 
 template<class Key, class Value>
