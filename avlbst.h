@@ -153,6 +153,9 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     AVLNode<Key, Value> *right = node->getRight();
 
     int8_t nodeBal = node->getBalance();
+    if (!right){
+        return;
+    }
     int8_t rightBal = right->getBalance();
     if (right->getLeft()){
         AVLNode<Key, Value> *rightLeftSub = right->getLeft();
@@ -189,6 +192,9 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     AVLNode<Key, Value> *left = node->getLeft();
 
     int8_t nodeBal = node->getBalance();
+    if (!left){
+        return;
+    }
     int8_t leftBal = left->getBalance();
     if (left->getRight()){
         AVLNode<Key, Value> *leftRightSub = left->getRight();
@@ -210,7 +216,7 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     node->setParent(left);
     // return left;
     node->setBalance(nodeBal - std::max(leftBal, (int8_t)0) - 1);
-    left->setBalance(leftBal + std::max(node->getBalance(), (int8_t)0) + 1);
+    left->setBalance(leftBal + std::min(node->getBalance(), (int8_t)0) - 1);
 
 
 }
@@ -243,7 +249,9 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
             if (temp->getParent()->getLeft()->getBalance() <= 0){
                 rotateRight(temp->getParent());
             }else{
-                rotateLeft(temp->getParent()->getLeft());
+                if (temp->getParent()->getLeft()){
+                    rotateLeft(temp->getParent()->getLeft());
+                }
                 rotateRight(temp->getParent());
             }
             break;
@@ -251,7 +259,9 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
             if (temp->getParent()->getRight()->getBalance() >= 0){
                 rotateLeft(temp->getParent());
             }else{
-                rotateRight(temp->getParent()->getRight());
+                if(rotateRight(temp->getParent()->getRight());){
+                    rotateRight(temp->getParent()->getRight());
+                }
                 rotateLeft(temp->getParent());
             }
             break;
