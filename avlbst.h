@@ -147,7 +147,7 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     //start with middle node
     //get the parent node
     if (node == nullptr){
-        return nullptr;
+        return ;
     }
     AVLNode<Key, Value> *par = node->getParent();
     AVLNode<Key, Value> *right = node->getRight();
@@ -177,7 +177,7 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     //start with middle node
     //get the parent node
     if (node == nullptr){
-        return nullptr;
+        return ;
     }
     AVLNode<Key, Value> *par = node->getParent();
     AVLNode<Key, Value> *left = node->getLeft();
