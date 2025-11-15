@@ -318,10 +318,126 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
  * should swap with the predecessor and then remove.
  */
 template<class Key, class Value>
-void AVLTree<Key, Value>:: remove(const Key& key)
-{
-    // TODO
+void AVLTree<Key, Value>:: remove(const Key& key){
+    if (this->root_ == nullptr){
+        return;
+    }
+    AVLNode<Key, Value> *curr = (AVLNode<Key, Value>*)this->root_;
 
+    while (curr != nullptr){
+        if (key > curr->getKey()){
+            if (curr->getRight()){
+                curr = curr->getRight();
+            }else{
+                return; 
+            }
+        }else if (key < curr->getKey()){
+            if (curr->getLeft()){
+                curr = curr->getLeft();
+            }else{
+                return;
+            }
+        }else{
+            break;
+        }
+    }
+    
+    if (curr == nullptr) return; 
+    
+    if (curr->getRight() != nullptr && curr->getLeft() != nullptr){
+        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::predecessor(curr));
+        nodeSwap(pred, curr);
+    }
+    
+    AVLNode<Key, Value>* parent = curr->getParent();
+    int8_t diff = 0;
+    if (parent != nullptr) {
+        if (parent->getLeft() == curr) {
+            diff = 1; 
+        } else {
+            diff = -1;
+        }
+    }
+    if (curr == this->root_){
+        if (curr->getLeft()){
+            this->root_ = curr->getLeft();
+            curr->getLeft()->setParent(nullptr);
+        }else if (curr->getRight()){
+            this->root_ = curr->getRight();
+            curr->getRight()->setParent(nullptr);
+        }else{
+            this->root_ = nullptr;
+        }
+        delete curr;
+        return; 
+    }
+    if (curr->getLeft() != nullptr){
+        if (curr->getParent()->getLeft() == curr){
+            curr->getParent()->setLeft(curr->getLeft());
+        }else{
+            curr->getParent()->setRight(curr->getLeft());
+        }
+        curr->getLeft()->setParent(curr->getParent());
+    }else if(curr->getRight() != nullptr){
+        if (curr->getParent()->getLeft() == curr){
+            curr->getParent()->setLeft(curr->getRight());
+        }else{
+            curr->getParent()->setRight(curr->getRight());
+        }
+        curr->getRight()->setParent(curr->getParent());
+    }else{  
+        if(curr->getParent()->getLeft() == curr){
+            curr->getParent()->setLeft(nullptr);
+        }else{
+            curr->getParent()->setRight(nullptr);
+        }
+    }
+    delete curr;
+    AVLNode<Key, Value>* temp = parent;
+    while (temp != nullptr){
+        temp->updateBalance(diff);
+        int8_t tempBalance = temp->getBalance();
+        AVLNode<Key, Value> *tempParent = temp->getParent();
+        if (tempParent != nullptr) {
+            if (tempParent->getLeft() == temp) {
+                diff = 1;
+            } else {
+                diff = -1;
+            }
+        }
+        
+        if (abs(tempBalance) == 1) {
+            break;  
+        }
+        
+        if (tempBalance == -2){
+            AVLNode<Key, Value> *tempChild = temp->getLeft();
+            if (tempChild && tempChild->getBalance() <= 0){
+                rotateRight(temp);
+            }else{
+                if (tempChild){
+                    rotateLeft(tempChild);
+                }
+                rotateRight(temp);
+            }
+            temp = tempParent;
+
+        }else if(tempBalance == 2){
+            AVLNode<Key, Value> *tempChild = temp->getRight();
+            if (tempChild && tempChild->getBalance() >= 0){
+                rotateLeft(temp);
+            }else{
+                if(tempChild){
+                    rotateRight(tempChild);
+                }
+                rotateLeft(temp);
+            }
+            temp = tempParent;
+
+        }else{
+            temp = tempParent;
+        }
+    }
 }
 
 template<class Key, class Value>
