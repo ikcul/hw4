@@ -351,7 +351,7 @@ void AVLTree<Key, Value>:: remove(const Key& key){
     AVLNode<Key, Value>* par = curr->getParent();
     int8_t diff = 0;
     if (par != nullptr) {
-        if (parent->getLeft() == curr) {
+        if (par->getLeft() == curr) {
             diff = 1; 
         } else {
             diff = -1;
