@@ -176,11 +176,11 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     right->setLeft(node);
     node->setParent(right);
 
-    int8_t nodeOldBal = node->getBalance();
-    int8_t rightOldBal = right->getBalance();
+    int nodeOldBal = node->getBalance();
+    int rightOldBal = right->getBalance();
 
-    int8_t newNodeBal = nodeOldBal - 1 - std::max(rightOldBal, (int8_t)0);
-    int8_t newRightBal = rightOldBal - 1 + std::min(newNodeBal, (int8_t)0);
+    int newNodeBal = nodeOldBal - 1 - std::max(rightOldBal, 0);
+    int newRightBal = rightOldBal - 1 + std::min(newNodeBal, 0);
 
     node->setBalance(newNodeBal);
     right->setBalance(newRightBal);
@@ -221,11 +221,11 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     left->setRight(node);
     node->setParent(left);
     // return left;
-    int8_t nodeOldBal = node->getBalance();
-    int8_t leftOldBal  = left->getBalance();
+    int nodeOldBal = node->getBalance();
+    int leftOldBal  = left->getBalance();
 
-    int8_t newNodeBal = nodeOldBal + 1 - std::min(leftOldBal, (int8_t)0);
-    int8_t newLeftBal = leftOldBal  + 1 + std::max(newNodeBal, (int8_t)0);
+    int newNodeBal = nodeOldBal + 1 - std::min(leftOldBal, 0);
+    int newLeftBal = leftOldBal  + 1 + std::max(newNodeBal, 0);
 
     node->setBalance(newNodeBal);
     left->setBalance(newLeftBal);
@@ -278,7 +278,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
             temp->getParent()->updateBalance(-1);
         }
 
-        int8_t tempBalance = temp->getParent()->getBalance();
+        int tempBalance = temp->getParent()->getBalance();
         AVLNode<Key, Value> *tempParent = temp->getParent();
         if (tempBalance == 0){
             break;
@@ -349,7 +349,7 @@ void AVLTree<Key, Value>:: remove(const Key& key){
     }
     
     AVLNode<Key, Value>* par = curr->getParent();
-    int8_t diff = 0;
+    int diff = 0;
     if (par != nullptr) {
         if (par->getLeft() == curr) {
             diff = 1; 
@@ -401,7 +401,7 @@ void AVLTree<Key, Value>:: remove(const Key& key){
     AVLNode<Key, Value>* temp = par;
     while (temp != nullptr){
         temp->updateBalance(diff);
-        int8_t tempBalance = temp->getBalance();
+        int tempBalance = temp->getBalance();
         AVLNode<Key, Value> *tempParent = temp->getParent();
         if (tempParent != nullptr) {
             if (tempParent->getLeft() == temp) {
@@ -415,8 +415,12 @@ void AVLTree<Key, Value>:: remove(const Key& key){
         }
         if (tempBalance == -2){
             AVLNode<Key, Value> *tempChild = temp->getLeft();
-            int8_t childBalance = tempChild ? tempChild->getBalance() : 0;
-            
+            int childBalance;
+            if (tempChild != nullptr) {
+                childBalance = tempChild->getBalance();
+            } else {
+                childBalance = 0;
+            }    
             if (tempChild && childBalance <= 0){
                 rotateRight(temp);
                 if (tempChild->getBalance() != 0) {
@@ -431,8 +435,12 @@ void AVLTree<Key, Value>:: remove(const Key& key){
             temp = tempParent;
         }else if(tempBalance == 2){
             AVLNode<Key, Value> *tempChild = temp->getRight();
-            int8_t childBalance = tempChild ? tempChild->getBalance() : 0;
-            
+            int childBalance;
+            if (tempChild != nullptr) {
+                childBalance = tempChild->getBalance();
+            } else {
+                childBalance = 0;
+            } 
             if (tempChild && childBalance >= 0){
                 rotateLeft(temp);
                 if (tempChild->getBalance() != 0) {
