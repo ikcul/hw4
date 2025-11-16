@@ -179,11 +179,8 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     int nodeOldBal = node->getBalance();
     int rightOldBal = right->getBalance();
 
-    int newNodeBal = nodeOldBal - 1 - std::max(rightOldBal, 0);
-    int newRightBal = rightOldBal - 1 + std::min(newNodeBal, 0);
-
-    node->setBalance(newNodeBal);
-    right->setBalance(newRightBal);
+    node->setBalance(nodeOldBal - 1 - std::max(rightOldBal, 0));
+    right->setBalance(rightOldBal - 1 + std::min(node->getBalance(), 0));
 
     // return right;
 
@@ -224,11 +221,8 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     int nodeOldBal = node->getBalance();
     int leftOldBal  = left->getBalance();
 
-    int newNodeBal = nodeOldBal + 1 - std::min(leftOldBal, 0);
-    int newLeftBal = leftOldBal  + 1 + std::max(newNodeBal, 0);
-
-    node->setBalance(newNodeBal);
-    left->setBalance(newLeftBal);
+    node->setBalance(nodeOldBal + 1 - std::min(leftOldBal, 0));
+    left->setBalance(leftOldBal  + 1 + std::max(node->getBalance(), 0));
 }
 /*
  * Recall: If key is already in the tree, you should 
