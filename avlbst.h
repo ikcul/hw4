@@ -176,8 +176,8 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value> *node){
     right->setLeft(node);
     node->setParent(right);
 
-    int nodeOldBal = node->getBalance();
-    int rightOldBal = right->getBalance();
+    int8_t nodeOldBal = node->getBalance();
+    int8_t rightOldBal = right->getBalance();
 
     node->setBalance(nodeOldBal - 1 - std::max(rightOldBal, (int8_t)0));
     right->setBalance(rightOldBal - 1 + std::min(node->getBalance(), (int8_t)0));
@@ -218,8 +218,8 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value> *node){
     left->setRight(node);
     node->setParent(left);
     // return left;
-    int nodeOldBal = node->getBalance();
-    int leftOldBal  = left->getBalance();
+    int8_t nodeOldBal = node->getBalance();
+    int8_t leftOldBal  = left->getBalance();
 
     node->setBalance(nodeOldBal + 1 - std::min(leftOldBal, (int8_t)0));
     left->setBalance(leftOldBal  + 1 + std::max(node->getBalance(), (int8_t)0));
