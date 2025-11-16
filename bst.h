@@ -602,7 +602,7 @@ BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current)
 }
 
 template<typename Key, typename Value>
-void clearNodes(Node<Key, Value> *root){
+void BinarySearchTree<Key, Value>::clearNodes(Node<Key, Value> *root){
     if (root == nullptr){
         return;
     }
