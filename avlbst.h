@@ -277,7 +277,6 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
         }else{
             temp->getParent()->updateBalance(-1);
         }
-
         int tempBalance = temp->getParent()->getBalance();
         AVLNode<Key, Value> *tempParent = temp->getParent();
         if (tempBalance == 0){
@@ -340,14 +339,13 @@ void AVLTree<Key, Value>:: remove(const Key& key){
             break;
         }
     }
-    
-    if (curr == nullptr) return; 
-    
+    if (curr == nullptr){
+        return;
+    }
     if (curr->getRight() != nullptr && curr->getLeft() != nullptr){
         AVLNode<Key, Value>* pred = (AVLNode<Key, Value>*)(BinarySearchTree<Key, Value>::predecessor(curr));
         nodeSwap(pred, curr);
     }
-    
     AVLNode<Key, Value>* par = curr->getParent();
     int diff = 0;
     if (par != nullptr) {
