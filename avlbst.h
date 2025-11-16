@@ -415,8 +415,13 @@ void AVLTree<Key, Value>:: remove(const Key& key){
         }
         if (tempBalance == -2){
             AVLNode<Key, Value> *tempChild = temp->getLeft();
-            if (tempChild && tempChild->getBalance() <= 0){
+            int8_t childBalance = tempChild ? tempChild->getBalance() : 0;
+            
+            if (tempChild && childBalance <= 0){
                 rotateRight(temp);
+                if (tempChild->getBalance() != 0) {
+                    break;
+                }
             }else{
                 if (tempChild){
                     rotateLeft(tempChild);
@@ -426,8 +431,13 @@ void AVLTree<Key, Value>:: remove(const Key& key){
             temp = tempParent;
         }else if(tempBalance == 2){
             AVLNode<Key, Value> *tempChild = temp->getRight();
-            if (tempChild && tempChild->getBalance() >= 0){
+            int8_t childBalance = tempChild ? tempChild->getBalance() : 0;
+            
+            if (tempChild && childBalance >= 0){
                 rotateLeft(temp);
+                if (tempChild->getBalance() != 0) {
+                    break;
+                }
             }else{
                 if(tempChild){
                     rotateRight(tempChild);
