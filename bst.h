@@ -248,6 +248,7 @@ protected:
 
     // Add helper functions here
     int isBalancedHelper(const Node<Key, Value> *root) const;
+    void clearNodes(Node<Key, Value> *root);
 
 
 protected:
@@ -600,7 +601,15 @@ BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current)
     return nullptr;
 }
 
-
+template<typename Key, typename Value>
+void clearNodes(Node<Key, Value> *root){
+    if (root == nullptr){
+        return;
+    }
+    clearNodes(root->getLeft());
+    clearNodes(root->getRight());
+    delete root;
+}
 /**
 * A method to remove all contents of the tree and
 * reset the values in the tree for use again.
@@ -609,9 +618,8 @@ template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::clear()
 {
     // TODO
-    while (root_){
-        remove(root_->getKey());
-    }
+    clearNodes(root_);
+    root_ = nullptr;
     return;
 }
 
